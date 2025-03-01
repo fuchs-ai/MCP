@@ -1,0 +1,61 @@
+# Betriebssystem-spezifische Dateien
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor-spezifische Dateien
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+
+# JavaScript/Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.npm
+
+# Log-Dateien
+*.log
+logs/
+
+# Temporäre Dateien
+*.tmp
+*.bak
+*.swp
+*~
+
+# Projekt-spezifische Dateien
+memory-bank/temp/

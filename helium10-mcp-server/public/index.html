@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helium10 MCP-Server</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    .navbar {
+      background-color: #0d6efd;
+      padding: 1rem;
+    }
+    .navbar-brand {
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .card {
+      margin-top: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: none;
+    }
+    .card-header {
+      background-color: #f8f9fb;
+      font-weight: bold;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+      border-color: #0a58ca;
+    }
+    .footer {
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      text-align: center;
+    }
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .status-active {
+      background-color: #28a745;
+    }
+    .status-inactive {
+      background-color: #dc3545;
+    }
+    .dashboard-card {
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Helium10 MCP-Server</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="dashboardLink">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="artifactsLink">Artefakte</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="toolsLink">Tools</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="workflowsLink">Workflows</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="settingsLink">Einstellungen</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div id="dashboardContainer">
+      <h1>Dashboard</h1>
+      <p>Willkommen beim Helium10 MCP-Server für die Claude.ai Desktop Integration.</p>
+      
+      <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <span>Serverstatus</span>
+                <span class="status-indicator status-active" id="serverStatus"></span>
+              </div>
+            </div>
+            <div class="card-body">
+              <p><strong>Version:</strong> <span id="serverVersion">1.0.0</span></p>
+              <p><strong>Uptime:</strong> <span id="serverUptime">0d 0h 0m 0s</span></p>
+              <p><strong>Umgebung:</strong> <span id="serverEnvironment">Entwicklung</span></p>
+              <button class="btn btn-sm btn-primary" id="refreshStatusBtn">Status aktualisieren</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-header">Artefakte</div>
+            <div class="card-body">
+              <h2 id="artifactsCount">0</h2>
+              <p>Aktive Artefakte</p>
+              <a href="#" class="btn btn-primary" id="createArtifactBtn">Neues Artefakt erstellen</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="card dashboard-card">
+            <div class="card-header">Ausführungen</div>
+            <div class="card-body">
+              <h2 id="executionsCount">0</h2>
+              <p>Artefakt-Ausführungen</p>
+              <a href="#" class="btn btn-secondary" id="viewExecutionsBtn">Ausführungen anzeigen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header">Letzte Aktivitäten</div>
+            <div class="card-body p-0">
+              <ul class="list-group list-group-flush" id="recentActivities">
+                <li class="list-group-item text-center">Keine Aktivitäten verfügbar</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+          <div class="card">
+            <div class="card-header">Systemressourcen</div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">CPU-Auslastung</label>
+                <div class="progress">
+                  <div class="progress-bar" id="cpuUsage" role="progressbar" style="width: 0%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Speichernutzung</label>
+                <div class="progress">
+                  <div class="progress-bar bg-info" id="memoryUsage" role="progressbar" style="width: 0%"></div>
+                </div>
+              </div>
+              <p><strong>Freier Speicher:</strong> <span id="freeMemory">0 MB</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="artifactsContainer" style="display: none;">
+      <h1>Artefakte</h1>
+      <p>Verwalten Sie Ihre Tool- und Workflow-Artefakte.</p>
+      
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <button class="btn btn-primary" id="createToolArtifactBtn">Tool-Artefakt erstellen</button>
+          <button class="btn btn-primary" id="createWorkflowArtifactBtn">Workflow-Artefakt erstellen</button>
+        </div>
+        <div class="input-group w-25">
+          <input type="text" class="form-control" placeholder="Suchen..." id="artifactSearchInput">
+          <button class="btn btn-outline-secondary" type="button" id="artifactSearchBtn">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Typ</th>
+                <th>Status</th>
+                <th>Erstellt am</th>
+                <th>Nutzung</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="artifactsTableBody">
+              <tr>
+                <td colspan="6" class="text-center">Keine Artefakte verfügbar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div id="toolsContainer" style="display: none;">
+      <h1>Tools</h1>
+      <p>Erkunden Sie die verfügbaren Tools und deren Funktionen.</p>
+      
+      <div class="row" id="toolsGrid">
+        <!-- Hier werden die Tools dynamisch eingefügt -->
+      </div>
+    </div>
+    
+    <div id="workflowsContainer" style="display: none;">
+      <h1>Workflows</h1>
+      <p>Entdecken und verwalten Sie Workflows für komplexe Aufgaben.</p>
+      
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Beschreibung</th>
+                <th>Schritte</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="workflowsTableBody">
+              <tr>
+                <td colspan="4" class="text-center">Keine Workflows verfügbar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div id="settingsContainer" style="display: none;">
+      <h1>Einstellungen</h1>
+      <p>Konfigurieren Sie die Systemeinstellungen des MCP-Servers.</p>
+      
+      <div class="card">
+        <div class="card-body">
+          <form id="settingsForm">
+            <div class="mb-3">
+              <label for="logLevel" class="form-label">Log-Level</label>
+              <select class="form-select" id="logLevel">
+                <option value="error">Error</option>
+                <option value="warn">Warning</option>
+                <option value="info" selected>Info</option>
+                <option value="debug">Debug</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="backupEnabled" class="form-label">Automatisches Backup</label>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="backupEnabled" checked>
+                <label class="form-check-label" for="backupEnabled">Aktiviert</label>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="backupInterval" class="form-label">Backup-Intervall (Stunden)</label>
+              <input type="number" class="form-control" id="backupInterval" value="24" min="1" max="168">
+            </div>
+            
+            <div class="mb-3">
+              <label for="maxBackups" class="form-label">Maximale Anzahl an Backups</label>
+              <input type="number" class="form-control" id="maxBackups" value="7" min="1" max="100">
+            </div>
+            
+            <div class="mb-3">
+              <label for="apiTimeout" class="form-label">API-Timeout (ms)</label>
+              <input type="number" class="form-control" id="apiTimeout" value="30000" min="1000" step="1000">
+            </div>
+            
+            <div class="mb-3">
+              <label for="defaultRequireApproval" class="form-label">Standardmäßig Genehmigung erforderlich</label>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="defaultRequireApproval" checked>
+                <label class="form-check-label" for="defaultRequireApproval">Aktiviert</label>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Einstellungen speichern</button>
+            <button type="button" class="btn btn-secondary" id="resetSettingsBtn">Auf Standardwerte zurücksetzen</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Helium10 MCP-Server &copy; 2023</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html> 

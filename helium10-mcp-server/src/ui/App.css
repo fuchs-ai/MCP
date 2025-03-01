@@ -1,0 +1,304 @@
+/* 
+ * App.css - Hauptstyling für die MCP Claude.ai Integration
+ */
+
+/* Globale Stile */
+:root {
+  --primary-color: #1890ff;
+  --secondary-color: #52c41a;
+  --error-color: #f5222d;
+  --warning-color: #faad14;
+  --success-color: #52c41a;
+  --text-color: rgba(0, 0, 0, 0.85);
+  --text-secondary: rgba(0, 0, 0, 0.45);
+  --background-color: #f0f2f5;
+  --border-color: #f0f0f0;
+  --border-radius: 2px;
+  --transition-time: 0.3s;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Layout-Stile */
+.app-container {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.site-header {
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1000;
+}
+
+.header-logo {
+  height: 32px;
+  margin-right: 12px;
+}
+
+.header-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.site-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px - 70px);
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 16px 0;
+  font-size: 12px;
+}
+
+.app-breadcrumb {
+  margin: 16px 0;
+}
+
+/* Sidebar-Stile */
+.site-sider {
+  box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+}
+
+.site-menu {
+  border-right: none;
+}
+
+.site-sider-collapse-button {
+  position: absolute;
+  top: 16px;
+  right: -12px;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+/* Karten-Stile */
+.card-container .ant-card {
+  margin-bottom: 24px;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.card-container .ant-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Hauptseite */
+.home-container .welcome-card {
+  border-radius: 4px;
+  background: linear-gradient(120deg, #1890ff, #096dd9);
+  color: white;
+  margin-bottom: 24px;
+}
+
+.home-container .welcome-card .ant-card-head {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.home-container .welcome-card .ant-card-head-title {
+  color: white;
+}
+
+.home-container .welcome-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.home-container .stats-card {
+  border-radius: 4px;
+  text-align: center;
+  height: 100%;
+}
+
+.home-container .recent-artifacts {
+  margin-top: 24px;
+}
+
+.home-container .quick-actions {
+  margin-top: 24px;
+}
+
+.home-container .quick-actions .ant-btn {
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
+/* ArtifactCreator Stile */
+.artifact-creator .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.artifact-creator .artifact-created {
+  margin-top: 24px;
+}
+
+.artifact-creator .param-item {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+/* WorkflowArtifactCreator Stile */
+.workflow-artifact-creator .workflow-info {
+  margin-bottom: 24px;
+}
+
+.workflow-artifact-creator .workflow-step {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #fafafa;
+  border-radius: 4px;
+}
+
+.workflow-artifact-creator .param-mapping {
+  font-family: monospace;
+  background-color: #f5f5f5;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+/* ArtifactList Stile */
+.artifact-list .filters {
+  margin-bottom: 16px;
+}
+
+.artifact-list .ant-table-row:hover {
+  cursor: pointer;
+}
+
+.artifact-list .results-container {
+  padding: 0 16px;
+}
+
+/* ToolList Stile */
+.tool-list .ant-tabs-tab {
+  font-weight: 500;
+}
+
+.tool-list .tool-details,
+.tool-list .workflow-details {
+  padding: 0 16px;
+}
+
+/* SettingsPage Stile */
+.settings-page .ant-tabs-tab {
+  font-weight: 500;
+}
+
+.settings-page .ant-form-item-extra {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* JsonEditor Stile */
+.json-editor {
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.json-editor:hover {
+  border-color: #40a9ff;
+}
+
+.json-editor-focused {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.json-editor .editor-toolbar {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.json-editor .error-message {
+  padding: 8px;
+  color: var(--error-color);
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+  .site-content {
+    padding: 16px;
+  }
+  
+  .home-container .quick-actions .ant-btn {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .artifact-list .filters {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .artifact-list .filters > * {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .site-content {
+    padding: 12px;
+  }
+  
+  .home-container .stats-card {
+    margin-bottom: 16px;
+  }
+}
+
+/* Animationen */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+} 
